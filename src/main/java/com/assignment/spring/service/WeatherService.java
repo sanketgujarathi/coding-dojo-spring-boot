@@ -1,8 +1,8 @@
 package com.assignment.spring.service;
 
-import com.assignment.spring.entity.WeatherEntity;
+import com.assignment.spring.entity.Weather;
 
 public interface WeatherService {
 
-    WeatherEntity getWeather(String city);
+    Weather getWeather(String city);
 }

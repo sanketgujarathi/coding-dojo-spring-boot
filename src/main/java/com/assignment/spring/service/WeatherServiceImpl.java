@@ -1,7 +1,7 @@
 package com.assignment.spring.service;
 
 import com.assignment.spring.entity.Constants;
-import com.assignment.spring.entity.WeatherEntity;
+import com.assignment.spring.entity.Weather;
 import com.assignment.spring.repository.WeatherRepository;
 import com.assignment.spring.response.api.WeatherResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +19,18 @@ public class WeatherServiceImpl implements WeatherService {
     private WeatherRepository weatherRepository;
 
     @Override
-    public WeatherEntity getWeather(String city) {
+    public Weather getWeather(String city) {
         String url = Constants.WEATHER_API_URL.replace("{city}", city).replace("{appid}", Constants.APP_ID);
         ResponseEntity<WeatherResponse> response = restTemplate.getForEntity(url, WeatherResponse.class);
-        WeatherEntity weather = mapper(response.getBody());
+        Weather weather = mapper(response.getBody());
         return weatherRepository.save(weather);
     }
 
-    private WeatherEntity mapper(WeatherResponse response) {
-        WeatherEntity entity = new WeatherEntity();
-        entity.setCity(response.getName());
-        entity.setCountry(response.getSys().getCountry());
-        entity.setTemperature(response.getMain().getTemp());
-        return entity;
+    private Weather mapper(WeatherResponse response) {
+        Weather weather = new Weather();
+        weather.setCity(response.getName());
+        weather.setCountry(response.getSys().getCountry());
+        weather.setTemperature(response.getMain().getTemp());
+        return weather;
     }
 }
