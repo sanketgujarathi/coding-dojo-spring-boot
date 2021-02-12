@@ -1,5 +1,5 @@
 
-package com.assignment.spring.api;
+package com.assignment.spring.response.api;
 
 import java.util.HashMap;
 import java.util.Map;
