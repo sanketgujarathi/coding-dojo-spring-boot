@@ -12,11 +12,14 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
-    @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
     private WeatherRepository weatherRepository;
+
+    public WeatherServiceImpl(RestTemplate restTemplate, WeatherRepository weatherRepository) {
+        this.restTemplate = restTemplate;
+        this.weatherRepository = weatherRepository;
+    }
 
     @Override
     public Weather getWeather(String city) {
