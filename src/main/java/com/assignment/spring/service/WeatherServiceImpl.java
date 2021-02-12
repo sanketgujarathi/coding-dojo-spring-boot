@@ -4,7 +4,6 @@ import com.assignment.spring.entity.Constants;
 import com.assignment.spring.entity.Weather;
 import com.assignment.spring.repository.WeatherRepository;
 import com.assignment.spring.response.api.WeatherResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
