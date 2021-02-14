@@ -1,0 +1,4 @@
+weather:
+  api:
+    url: ${APP_URL}
+    app-id: ${APP_ID}

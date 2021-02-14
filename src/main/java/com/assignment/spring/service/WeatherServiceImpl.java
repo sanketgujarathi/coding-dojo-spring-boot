@@ -1,9 +1,9 @@
 package com.assignment.spring.service;
 
-import com.assignment.spring.entity.Constants;
 import com.assignment.spring.entity.Weather;
 import com.assignment.spring.repository.WeatherRepository;
 import com.assignment.spring.response.api.WeatherResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,14 +15,20 @@ public class WeatherServiceImpl implements WeatherService {
 
     private WeatherRepository weatherRepository;
 
-    public WeatherServiceImpl(RestTemplate restTemplate, WeatherRepository weatherRepository) {
+    private final String WEATHER_API_URL;
+
+    private final String WEATHER_APP_ID;
+
+    public WeatherServiceImpl(RestTemplate restTemplate, WeatherRepository weatherRepository, @Value("${weather.api.url}") String weatherApiUrl, @Value("${weather.api.app-id}")String weatherAppId) {
         this.restTemplate = restTemplate;
         this.weatherRepository = weatherRepository;
+        WEATHER_API_URL = weatherApiUrl;
+        WEATHER_APP_ID = weatherAppId;
     }
 
     @Override
     public Weather getWeather(String city) {
-        String url = Constants.WEATHER_API_URL.replace("{city}", city).replace("{appid}", Constants.APP_ID);
+        String url = String.format(WEATHER_API_URL, city, WEATHER_APP_ID);
         ResponseEntity<WeatherResponse> response = restTemplate.getForEntity(url, WeatherResponse.class);
         Weather weather = mapper(response.getBody());
         return weatherRepository.save(weather);
