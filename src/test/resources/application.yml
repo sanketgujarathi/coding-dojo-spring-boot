@@ -1,0 +1,4 @@
+weather:
+  api:
+    url: http://localhost:8080/data/2.5/weather?q=%s&APPID=%s
+    app-id: dummy
