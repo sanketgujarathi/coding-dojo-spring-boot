@@ -7,6 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class WeatherServiceImpl implements WeatherService {
@@ -27,14 +34,22 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     @Override
-    public Weather getWeather(String city) {
-        String url = String.format(WEATHER_API_URL, city, WEATHER_APP_ID);
-        ResponseEntity<WeatherResponse> response = restTemplate.getForEntity(url, WeatherResponse.class);
-        Weather weather = mapper(response.getBody());
-        return weatherRepository.save(weather);
+    public Optional<Weather> getWeather(final String city) {
+        URI uri = UriComponentsBuilder.fromUriString(WEATHER_API_URL)
+                .queryParam("q", city)
+                .queryParam("APPID", WEATHER_APP_ID)
+                .build()
+                .toUri();
+        ResponseEntity<WeatherResponse> response = restTemplate.getForEntity(uri, WeatherResponse.class);
+        if(!response.getStatusCode().isError() && response.hasBody()){
+            Weather weather = mapper(response.getBody());
+            return Optional.of(weatherRepository.save(weather));
+        }else {
+            return Optional.empty();
+        }
     }
 
-    private Weather mapper(WeatherResponse response) {
+    private Weather mapper(final WeatherResponse response) {
         Weather weather = new Weather();
         weather.setCity(response.getName());
         weather.setCountry(response.getSys().getCountry());

@@ -1,4 +1,4 @@
 weather:
   api:
-    url: http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=%s
-    app-id: dummy
+    url: http://api.openweathermap.org/data/2.5/weather
+    app-id: ef4e29cd56370988834ab740f93cc2d8
