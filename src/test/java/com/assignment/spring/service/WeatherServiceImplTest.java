@@ -56,6 +56,8 @@ public class WeatherServiceImplTest {
     private String weatherAppId;
 
     private static final String API_RESPONSE = "{\"coord\":{\"lon\":4.8897,\"lat\":52.374},\"weather\":[{\"id\":701,\"main\":\"Mist\",\"description\":\"mist\",\"icon\":\"50n\"}],\"base\":\"stations\",\"main\":{\"temp\":277.81,\"feels_like\":273.02,\"temp_min\":277.04,\"temp_max\":278.71,\"pressure\":1020,\"humidity\":100},\"visibility\":2500,\"wind\":{\"speed\":5.14,\"deg\":210},\"clouds\":{\"all\":75},\"dt\":1613412051,\"sys\":{\"type\":1,\"id\":1524,\"country\":\"NL\",\"sunrise\":1613372182,\"sunset\":1613407981},\"timezone\":3600,\"id\":2759794,\"name\":\"Amsterdam\",\"cod\":200}";
+    private static final String QUERY = "?q=Amsterdam&APPID=dummy";
+    private static final String AMSTERDAM = "Amsterdam";
 
 
     @Before
@@ -67,13 +69,12 @@ public class WeatherServiceImplTest {
 
     @Test
     public void getWeather_HappyPath() {
-        String city = "Amsterdam";
-        mockServer.expect(ExpectedCount.once(), requestTo(String.format(weatherApiUrl, city, weatherAppId)))
+        mockServer.expect(ExpectedCount.once(), requestTo(weatherApiUrl.concat(QUERY)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON).body(API_RESPONSE));
         Mockito.when(weatherRepository.save(any(Weather.class))).then(AdditionalAnswers.returnsFirstArg());
 
-        Optional<Weather> weather = weatherService.getWeather(city);
+        Optional<Weather> weather = weatherService.getWeather(AMSTERDAM);
 
         mockServer.verify();
         verify(weatherRepository, times(1)).save(any(Weather.class));
@@ -83,13 +84,12 @@ public class WeatherServiceImplTest {
 
     @Test
     public void getWeather_NotFound_Return_Empty() {
-        String city = "Amsterdam";
-        mockServer.expect(ExpectedCount.once(), requestTo(String.format(weatherApiUrl, city, weatherAppId)))
+        mockServer.expect(ExpectedCount.once(), requestTo(weatherApiUrl.concat(QUERY)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
         Mockito.when(weatherRepository.save(any(Weather.class))).then(AdditionalAnswers.returnsFirstArg());
 
-        Optional<Weather> weather = weatherService.getWeather(city);
+        Optional<Weather> weather = weatherService.getWeather(AMSTERDAM);
 
         mockServer.verify();
         verify(weatherRepository, never()).save(any(Weather.class));
@@ -99,12 +99,11 @@ public class WeatherServiceImplTest {
 
     @Test
     public void getWeather_UnauthorisedRequest() {
-        String city = "Amsterdam";
-        mockServer.expect(ExpectedCount.once(), requestTo(String.format(weatherApiUrl, city, weatherAppId)))
+        mockServer.expect(ExpectedCount.once(), requestTo(weatherApiUrl.concat(QUERY)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withUnauthorizedRequest());
 
-        Assertions.assertThatThrownBy(() -> weatherService.getWeather(city))
+        Assertions.assertThatThrownBy(() -> weatherService.getWeather(AMSTERDAM))
                 .isInstanceOf(WeatherApiException.class);
         mockServer.verify();
         verify(weatherRepository, never()).save(any(Weather.class));
@@ -113,12 +112,11 @@ public class WeatherServiceImplTest {
 
     @Test
     public void getWeather_BadRequest() {
-        String city = "Amsterdam";
-        mockServer.expect(ExpectedCount.once(), requestTo(String.format(weatherApiUrl, city, weatherAppId)))
+        mockServer.expect(ExpectedCount.once(), requestTo(weatherApiUrl.concat(QUERY)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withBadRequest());
 
-        Assertions.assertThatThrownBy(() -> weatherService.getWeather(city))
+        Assertions.assertThatThrownBy(() -> weatherService.getWeather(AMSTERDAM))
                 .isInstanceOf(WeatherApiException.class);
         mockServer.verify();
         verify(weatherRepository, never()).save(any(Weather.class));
@@ -127,12 +125,11 @@ public class WeatherServiceImplTest {
 
     @Test
     public void getWeather_ServerError() {
-        String city = "Amsterdam";
-        mockServer.expect(ExpectedCount.once(), requestTo(String.format(weatherApiUrl, city, weatherAppId)))
+        mockServer.expect(ExpectedCount.once(), requestTo(weatherApiUrl.concat(QUERY)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withServerError());
 
-        Assertions.assertThatThrownBy(() -> weatherService.getWeather(city))
+        Assertions.assertThatThrownBy(() -> weatherService.getWeather(AMSTERDAM))
                 .isInstanceOf(WeatherApiException.class);
         mockServer.verify();
         verify(weatherRepository, never()).save(any(Weather.class));
