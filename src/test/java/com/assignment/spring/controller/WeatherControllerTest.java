@@ -28,9 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class WeatherControllerTest {
 
-    public static final String VALIDATION_ERROR = "{\"message\":\"Invalid value passed in request\"}";
-    public static final String SERVER_ERROR = "{\"message\":\"Server Error\"}";
-    private final String WEATHER_OUTPUT = "{\"id\":123,\"city\":\"Amsterdam\",\"country\":\"Netherlands\",\"temperature\":20.5}";
+    private static final String VALIDATION_ERROR = "{\"message\":\"Invalid value passed in request\"}";
+    private static final String SERVER_ERROR = "{\"message\":\"Server Error\"}";
+    private static final String AUTH_VALUE = "Basic YWRtaW46cGFzc3dvcmQ=";
+    private static final String AUTH_HEADER = "Authorization";
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,16 +47,19 @@ public class WeatherControllerTest {
     @Test
     public void testGetWeather_HappyPath() throws Exception {
         when(weatherService.getWeather(any(String.class))).thenReturn(Optional.of(getWeather()));
-        this.mockMvc.perform(get("/weather?city=Amsterdam"))
+        String weatherOutput = "{\"id\":123,\"city\":\"Amsterdam\",\"country\":\"Netherlands\",\"temperature\":20.5}";
+        this.mockMvc.perform(get("/weather?city=Amsterdam")
+                            .header(AUTH_HEADER, AUTH_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
-                        .json(WEATHER_OUTPUT));
+                        .json(weatherOutput));
     }
 
     @Test
     public void testGetWeather_AlphaNumericInput_BadRequest() throws Exception {
-        this.mockMvc.perform(get("/weather?city=Am5terdam"))
+        this.mockMvc.perform(get("/weather?city=Am5terdam")
+                            .header(AUTH_HEADER, AUTH_VALUE))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content()
@@ -64,7 +68,8 @@ public class WeatherControllerTest {
 
     @Test
     public void testGetWeather_SpecialCharactersInput_BadRequest() throws Exception {
-        this.mockMvc.perform(get("/weather?city=Amsterd@m"))
+        this.mockMvc.perform(get("/weather?city=Amsterd@m")
+                            .header(AUTH_HEADER, AUTH_VALUE))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content()
@@ -73,7 +78,8 @@ public class WeatherControllerTest {
 
     @Test
     public void testGetWeather_EmptyInput_BadRequest() throws Exception {
-        this.mockMvc.perform(get("/weather?city=  "))
+        this.mockMvc.perform(get("/weather?city=  ")
+                            .header(AUTH_HEADER, AUTH_VALUE))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content()
@@ -82,7 +88,8 @@ public class WeatherControllerTest {
 
     @Test
     public void testGetWeather_NullInput_BadRequest() throws Exception {
-        this.mockMvc.perform(get("/weather"))
+        this.mockMvc.perform(get("/weather")
+                            .header(AUTH_HEADER, AUTH_VALUE))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content()
@@ -93,7 +100,8 @@ public class WeatherControllerTest {
     public void testGetWeather_NotFound() throws Exception {
 
         when(weatherService.getWeather(any(String.class))).thenReturn(Optional.empty());
-        this.mockMvc.perform(get("/weather?city=xyz"))
+        this.mockMvc.perform(get("/weather?city=xyz")
+                            .header(AUTH_HEADER, AUTH_VALUE))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -102,10 +110,30 @@ public class WeatherControllerTest {
     public void testGetWeather_ServerError() throws Exception {
 
         when(weatherService.getWeather(any(String.class))).thenThrow(new WeatherApiException("Server Error"));
-        this.mockMvc.perform(get("/weather?city=Amsterdam"))
+            this.mockMvc.perform(get("/weather?city=Amsterdam")
+                                .header(AUTH_HEADER, AUTH_VALUE))
                 .andDo(print())
                 .andExpect(status().isInternalServerError() )
                 .andExpect(content().json(SERVER_ERROR));
+    }
+
+    @Test
+    public void testGetWeather_MissingAuthorisation() throws Exception {
+
+        when(weatherService.getWeather(any(String.class))).thenThrow(new WeatherApiException("Server Error"));
+        this.mockMvc.perform(get("/weather?city=Amsterdam"))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void testGetWeather_WrongCredentials() throws Exception {
+
+        when(weatherService.getWeather(any(String.class))).thenThrow(new WeatherApiException("Server Error"));
+        this.mockMvc.perform(get("/weather?city=Amsterdam")
+                .header(AUTH_HEADER, "Basic YWRtaW46cGFzc3dvcmQx"))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
     }
 
     private Weather getWeather() {
