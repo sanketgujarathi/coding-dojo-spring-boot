@@ -24,22 +24,18 @@ public class Coordinates {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
 
-    @JsonProperty("lon")
     public Double getLongitude() {
         return longitude;
     }
 
-    @JsonProperty("lon")
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    @JsonProperty("lat")
     public Double getLatitude() {
         return latitude;
     }
 
-    @JsonProperty("lat")
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }

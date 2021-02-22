@@ -33,52 +33,42 @@ public class Main {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
 
-    @JsonProperty("temp")
     public Double getTemperature() {
         return temperature;
     }
 
-    @JsonProperty("temp")
     public void setTemperature(Double temperature) {
         this.temperature = temperature;
     }
 
-    @JsonProperty("pressure")
     public Integer getPressure() {
         return pressure;
     }
 
-    @JsonProperty("pressure")
     public void setPressure(Integer pressure) {
         this.pressure = pressure;
     }
 
-    @JsonProperty("humidity")
     public Integer getHumidity() {
         return humidity;
     }
 
-    @JsonProperty("humidity")
     public void setHumidity(Integer humidity) {
         this.humidity = humidity;
     }
 
-    @JsonProperty("temp_min")
     public Double getMinTemperature() {
         return minTemperature;
     }
 
-    @JsonProperty("temp_min")
     public void setMinTemperature(Double minTemperature) {
         this.minTemperature = minTemperature;
     }
 
-    @JsonProperty("temp_max")
     public Double getMaxTemperature() {
         return maxTemperature;
     }
 
-    @JsonProperty("temp_max")
     public void setMaxTemperature(Double maxTemperature) {
         this.maxTemperature = maxTemperature;
     }

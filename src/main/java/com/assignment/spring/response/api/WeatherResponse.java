@@ -55,122 +55,98 @@ public class WeatherResponse {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
 
-    @JsonProperty("coord")
     public Coordinates getCoordinates() {
         return coordinates;
     }
 
-    @JsonProperty("coord")
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
 
-    @JsonProperty("weather")
     public List<Weather> getWeather() {
         return weather;
     }
 
-    @JsonProperty("weather")
     public void setWeather(List<Weather> weather) {
         this.weather = weather;
     }
 
-    @JsonProperty("base")
     public String getBase() {
         return base;
     }
 
-    @JsonProperty("base")
     public void setBase(String base) {
         this.base = base;
     }
 
-    @JsonProperty("main")
     public Main getMain() {
         return main;
     }
 
-    @JsonProperty("main")
     public void setMain(Main main) {
         this.main = main;
     }
 
-    @JsonProperty("visibility")
     public Integer getVisibility() {
         return visibility;
     }
 
-    @JsonProperty("visibility")
     public void setVisibility(Integer visibility) {
         this.visibility = visibility;
     }
 
-    @JsonProperty("wind")
     public Wind getWind() {
         return wind;
     }
 
-    @JsonProperty("wind")
     public void setWind(Wind wind) {
         this.wind = wind;
     }
 
-    @JsonProperty("clouds")
     public Clouds getClouds() {
         return clouds;
     }
 
-    @JsonProperty("clouds")
     public void setClouds(Clouds clouds) {
         this.clouds = clouds;
     }
 
-    @JsonProperty("dt")
     public Integer getDate() {
         return date;
     }
 
-    @JsonProperty("dt")
     public void setDate(Integer date) {
         this.date = date;
     }
 
-    @JsonProperty("sys")
     public System getSystem() {
         return system;
     }
 
-    @JsonProperty("sys")
     public void setSystem(System system) {
         this.system = system;
     }
 
-    @JsonProperty("id")
     public Integer getId() {
         return id;
     }
 
-    @JsonProperty("id")
     public void setId(Integer id) {
         this.id = id;
     }
 
-    @JsonProperty("name")
     public String getName() {
         return name;
     }
 
-    @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
-    @JsonProperty("cod")
     public Integer getCode() {
         return code;
     }
 
-    @JsonProperty("cod")
     public void setCode(Integer code) {
         this.code = code;
     }
