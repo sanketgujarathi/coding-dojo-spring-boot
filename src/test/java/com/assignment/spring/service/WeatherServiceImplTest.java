@@ -79,6 +79,9 @@ public class WeatherServiceImplTest {
         mockServer.verify();
         verify(weatherRepository, times(1)).save(any(Weather.class));
         Assert.assertTrue("Weather object should be present", weather.isPresent());
+        Assert.assertNotNull("City name should be populated", weather.get().getCity());
+        Assert.assertNotNull("Country should be populated", weather.get().getCountry());
+        Assert.assertNotNull("Temperature should be populated", weather.get().getTemperature());
 
     }
 

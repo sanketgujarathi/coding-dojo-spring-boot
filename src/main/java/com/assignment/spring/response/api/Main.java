@@ -1,14 +1,15 @@
 
 package com.assignment.spring.response.api;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -22,9 +23,7 @@ public class Main {
 
     @JsonProperty("temp")
     private Double temperature;
-    @JsonProperty("pressure")
     private Integer pressure;
-    @JsonProperty("humidity")
     private Integer humidity;
     @JsonProperty("temp_min")
     private Double minTemperature;

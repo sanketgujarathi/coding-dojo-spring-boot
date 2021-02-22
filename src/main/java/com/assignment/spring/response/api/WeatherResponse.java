@@ -1,15 +1,16 @@
 
 package com.assignment.spring.response.api;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -30,17 +31,11 @@ public class WeatherResponse {
 
     @JsonProperty("coord")
     private Coordinates coordinates;
-    @JsonProperty("weather")
     private List<Weather> weather = null;
-    @JsonProperty("base")
     private String base;
-    @JsonProperty("main")
     private Main main;
-    @JsonProperty("visibility")
     private Integer visibility;
-    @JsonProperty("wind")
     private Wind wind;
-    @JsonProperty("clouds")
     private Clouds clouds;
     @JsonProperty("dt")
     private Integer date;
@@ -48,7 +43,6 @@ public class WeatherResponse {
     private System system;
     @JsonProperty("id")
     private Integer id;
-    @JsonProperty("name")
     private String name;
     @JsonProperty("cod")
     private Integer code;
