@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "sunrise",
     "sunset"
 })
-public class Sys {
+public class System {
 
     @JsonProperty("type")
     private Integer type;
@@ -34,7 +34,7 @@ public class Sys {
     @JsonProperty("sunset")
     private Integer sunset;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("type")
     public Integer getType() {

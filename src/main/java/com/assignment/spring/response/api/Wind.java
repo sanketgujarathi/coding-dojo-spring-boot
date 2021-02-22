@@ -20,9 +20,9 @@ public class Wind {
     @JsonProperty("speed")
     private Double speed;
     @JsonProperty("deg")
-    private Integer deg;
+    private Integer degrees;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("speed")
     public Double getSpeed() {
@@ -35,13 +35,13 @@ public class Wind {
     }
 
     @JsonProperty("deg")
-    public Integer getDeg() {
-        return deg;
+    public Integer getDegrees() {
+        return degrees;
     }
 
     @JsonProperty("deg")
-    public void setDeg(Integer deg) {
-        this.deg = deg;
+    public void setDegrees(Integer degrees) {
+        this.degrees = degrees;
     }
 
     @JsonAnyGetter

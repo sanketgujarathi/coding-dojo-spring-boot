@@ -21,26 +21,26 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Main {
 
     @JsonProperty("temp")
-    private Double temp;
+    private Double temperature;
     @JsonProperty("pressure")
     private Integer pressure;
     @JsonProperty("humidity")
     private Integer humidity;
     @JsonProperty("temp_min")
-    private Double tempMin;
+    private Double minTemperature;
     @JsonProperty("temp_max")
-    private Double tempMax;
+    private Double maxTemperature;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("temp")
-    public Double getTemp() {
-        return temp;
+    public Double getTemperature() {
+        return temperature;
     }
 
     @JsonProperty("temp")
-    public void setTemp(Double temp) {
-        this.temp = temp;
+    public void setTemperature(Double temperature) {
+        this.temperature = temperature;
     }
 
     @JsonProperty("pressure")
@@ -64,23 +64,23 @@ public class Main {
     }
 
     @JsonProperty("temp_min")
-    public Double getTempMin() {
-        return tempMin;
+    public Double getMinTemperature() {
+        return minTemperature;
     }
 
     @JsonProperty("temp_min")
-    public void setTempMin(Double tempMin) {
-        this.tempMin = tempMin;
+    public void setMinTemperature(Double minTemperature) {
+        this.minTemperature = minTemperature;
     }
 
     @JsonProperty("temp_max")
-    public Double getTempMax() {
-        return tempMax;
+    public Double getMaxTemperature() {
+        return maxTemperature;
     }
 
     @JsonProperty("temp_max")
-    public void setTempMax(Double tempMax) {
-        this.tempMax = tempMax;
+    public void setMaxTemperature(Double maxTemperature) {
+        this.maxTemperature = maxTemperature;
     }
 
     @JsonAnyGetter

@@ -15,33 +15,33 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "lon",
     "lat"
 })
-public class Coord {
+public class Coordinates {
 
     @JsonProperty("lon")
-    private Double lon;
+    private Double longitude;
     @JsonProperty("lat")
-    private Double lat;
+    private Double latitude;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("lon")
-    public Double getLon() {
-        return lon;
+    public Double getLongitude() {
+        return longitude;
     }
 
     @JsonProperty("lon")
-    public void setLon(Double lon) {
-        this.lon = lon;
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     @JsonProperty("lat")
-    public Double getLat() {
-        return lat;
+    public Double getLatitude() {
+        return latitude;
     }
 
     @JsonProperty("lat")
-    public void setLat(Double lat) {
-        this.lat = lat;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
     @JsonAnyGetter

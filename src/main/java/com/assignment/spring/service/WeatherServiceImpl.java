@@ -7,12 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -52,8 +49,8 @@ public class WeatherServiceImpl implements WeatherService {
     private Weather mapper(final WeatherResponse response) {
         Weather weather = new Weather();
         weather.setCity(response.getName());
-        weather.setCountry(response.getSys().getCountry());
-        weather.setTemperature(response.getMain().getTemp());
+        weather.setCountry(response.getSystem().getCountry());
+        weather.setTemperature(response.getMain().getTemperature());
         return weather;
     }
 }

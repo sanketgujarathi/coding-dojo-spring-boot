@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class WeatherResponse {
 
     @JsonProperty("coord")
-    private Coord coord;
+    private Coordinates coordinates;
     @JsonProperty("weather")
     private List<Weather> weather = null;
     @JsonProperty("base")
@@ -43,26 +43,26 @@ public class WeatherResponse {
     @JsonProperty("clouds")
     private Clouds clouds;
     @JsonProperty("dt")
-    private Integer dt;
+    private Integer date;
     @JsonProperty("sys")
-    private Sys sys;
+    private System system;
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("cod")
-    private Integer cod;
+    private Integer code;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("coord")
-    public Coord getCoord() {
-        return coord;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
     @JsonProperty("coord")
-    public void setCoord(Coord coord) {
-        this.coord = coord;
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     @JsonProperty("weather")
@@ -126,23 +126,23 @@ public class WeatherResponse {
     }
 
     @JsonProperty("dt")
-    public Integer getDt() {
-        return dt;
+    public Integer getDate() {
+        return date;
     }
 
     @JsonProperty("dt")
-    public void setDt(Integer dt) {
-        this.dt = dt;
+    public void setDate(Integer date) {
+        this.date = date;
     }
 
     @JsonProperty("sys")
-    public Sys getSys() {
-        return sys;
+    public System getSystem() {
+        return system;
     }
 
     @JsonProperty("sys")
-    public void setSys(Sys sys) {
-        this.sys = sys;
+    public void setSystem(System system) {
+        this.system = system;
     }
 
     @JsonProperty("id")
@@ -166,13 +166,13 @@ public class WeatherResponse {
     }
 
     @JsonProperty("cod")
-    public Integer getCod() {
-        return cod;
+    public Integer getCode() {
+        return code;
     }
 
     @JsonProperty("cod")
-    public void setCod(Integer cod) {
-        this.cod = cod;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
     @JsonAnyGetter
