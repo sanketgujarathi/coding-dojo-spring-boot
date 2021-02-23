@@ -9,3 +9,8 @@ spring:
     url: jdbc:postgresql://${DB_HOSTNAME}:${DB_PORT}/weatherdb
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh,env,metrics,logfile,info

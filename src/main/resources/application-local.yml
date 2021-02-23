@@ -2,10 +2,8 @@ weather:
   api:
     url: http://api.openweathermap.org/data/2.5/weather
     app-id: ef4e29cd56370988834ab740f93cc2d8
-spring:
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-  datasource:
-    url: jdbc:postgresql://localhost:5432/weatherdb
-    username: username
-    password: password
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh,env,metrics,logfile,info
