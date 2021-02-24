@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class WeatherControllerTest {
 
     private static final String VALIDATION_ERROR = "{\"message\":\"Invalid value passed in request\"}";
-    private static final String SERVER_ERROR = "{\"message\":\"Server Error\"}";
+    private static final String SERVER_ERROR = "{\"message\":\"Error occurred while processing request\"}";
     private static final String AUTH_VALUE = "Basic YWRtaW46cGFzc3dvcmQ=";
     private static final String AUTH_HEADER = "Authorization";
 
@@ -112,6 +113,17 @@ public class WeatherControllerTest {
         when(weatherService.getWeather(any(String.class))).thenThrow(new WeatherApiException("Server Error"));
             this.mockMvc.perform(get("/weather?city=Amsterdam")
                                 .header(AUTH_HEADER, AUTH_VALUE))
+                .andDo(print())
+                .andExpect(status().isInternalServerError() )
+                .andExpect(content().json(SERVER_ERROR));
+    }
+
+    @Test
+    public void testGetWeather_DatabaseError() throws Exception {
+
+        when(weatherService.getWeather(any(String.class))).thenThrow(new DataAccessException("Server Error"){});
+        this.mockMvc.perform(get("/weather?city=Amsterdam")
+                .header(AUTH_HEADER, AUTH_VALUE))
                 .andDo(print())
                 .andExpect(status().isInternalServerError() )
                 .andExpect(content().json(SERVER_ERROR));

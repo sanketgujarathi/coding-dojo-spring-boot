@@ -3,6 +3,8 @@ package com.assignment.spring.service;
 import com.assignment.spring.entity.Weather;
 import com.assignment.spring.repository.WeatherRepository;
 import com.assignment.spring.response.api.WeatherResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,12 @@ public class WeatherServiceImpl implements WeatherService {
 
     private final String WEATHER_APP_ID;
 
+    private static Logger log = LoggerFactory.getLogger(WeatherServiceImpl.class);
+
+    private static final String CITY = "q";
+
+    private static final String APP_ID = "APPID";
+
     public WeatherServiceImpl(RestTemplate restTemplate, WeatherRepository weatherRepository, @Value("${weather.api.url}") String weatherApiUrl, @Value("${weather.api.app-id}")String weatherAppId) {
         this.restTemplate = restTemplate;
         this.weatherRepository = weatherRepository;
@@ -33,15 +41,19 @@ public class WeatherServiceImpl implements WeatherService {
     @Override
     public Optional<Weather> getWeather(final String city) {
         URI uri = UriComponentsBuilder.fromUriString(WEATHER_API_URL)
-                .queryParam("q", city)
-                .queryParam("APPID", WEATHER_APP_ID)
+                .queryParam(CITY, city)
+                .queryParam(APP_ID, WEATHER_APP_ID)
                 .build()
                 .toUri();
+        log.info("Making API call to fetch weather information for city: {}", city);
         ResponseEntity<WeatherResponse> response = restTemplate.getForEntity(uri, WeatherResponse.class);
         if(!response.getStatusCode().isError() && response.hasBody()){
+            log.info("Received API response with weather information for city: {} and status: {}", city, response.getStatusCode());
             Weather weather = mapper(response.getBody());
+            log.info("Saving weather information in db for city: {}", weather.getCity());
             return Optional.of(weatherRepository.save(weather));
         }else {
+            log.info("Weather information not found for city: {}", city);
             return Optional.empty();
         }
     }

@@ -3,6 +3,8 @@ package com.assignment.spring.controller;
 import com.assignment.spring.entity.Weather;
 import com.assignment.spring.response.WeatherResponse;
 import com.assignment.spring.service.WeatherService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,10 @@ import static org.springframework.http.ResponseEntity.ok;
 @Validated
 public class WeatherController {
 
+    private static Logger log = LoggerFactory.getLogger(WeatherController.class);
+
     private static final String CITY_VALIDATION_REGEX = "^[a-zA-z]+([\\s.-]?[a-zA-z])+$";
+
     private WeatherService weatherService;
 
     public WeatherController(WeatherService weatherService) {
@@ -29,7 +34,8 @@ public class WeatherController {
 
     @GetMapping("/weather")
     public ResponseEntity<WeatherResponse> weather(@RequestParam @NotEmpty @Pattern(regexp = CITY_VALIDATION_REGEX) final String city) {
-        Optional<Weather> weather   = weatherService.getWeather(city);
+        log.info("Received request for city: {}", city);
+        Optional<Weather> weather = weatherService.getWeather(city);
         return weather
                 .map(v -> ok(mapEntityToResponse(v)))
                 .orElse(notFound().build());
