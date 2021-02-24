@@ -5,7 +5,6 @@ import com.assignment.spring.entity.Weather;
 import com.assignment.spring.exception.WeatherApiException;
 import com.assignment.spring.repository.WeatherRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +27,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -56,7 +58,9 @@ public class WeatherServiceImplTest {
     private String weatherAppId;
 
     private static final String API_RESPONSE = "{\"coord\":{\"lon\":4.8897,\"lat\":52.374},\"weather\":[{\"id\":701,\"main\":\"Mist\",\"description\":\"mist\",\"icon\":\"50n\"}],\"base\":\"stations\",\"main\":{\"temp\":277.81,\"feels_like\":273.02,\"temp_min\":277.04,\"temp_max\":278.71,\"pressure\":1020,\"humidity\":100},\"visibility\":2500,\"wind\":{\"speed\":5.14,\"deg\":210},\"clouds\":{\"all\":75},\"dt\":1613412051,\"sys\":{\"type\":1,\"id\":1524,\"country\":\"NL\",\"sunrise\":1613372182,\"sunset\":1613407981},\"timezone\":3600,\"id\":2759794,\"name\":\"Amsterdam\",\"cod\":200}";
+
     private static final String QUERY = "?q=Amsterdam&APPID=dummy";
+
     private static final String AMSTERDAM = "Amsterdam";
 
 
@@ -78,10 +82,11 @@ public class WeatherServiceImplTest {
 
         mockServer.verify();
         verify(weatherRepository, times(1)).save(any(Weather.class));
-        Assert.assertTrue("Weather object should be present", weather.isPresent());
-        Assert.assertNotNull("City name should be populated", weather.get().getCity());
-        Assert.assertNotNull("Country should be populated", weather.get().getCountry());
-        Assert.assertNotNull("Temperature should be populated", weather.get().getTemperature());
+        assertThat("Weather object should be present", weather.isPresent(), is(true));
+        Weather weatherResponse = weather.get();
+        assertThat("City name should be populated", weatherResponse.getCity(), equalTo("Amsterdam"));
+        assertThat("Country should be populated", weatherResponse.getCountry(), equalTo("NL"));
+        assertThat("Temperature should be populated", weatherResponse.getTemperature(), equalTo(277.81));
 
     }
 
@@ -96,7 +101,7 @@ public class WeatherServiceImplTest {
 
         mockServer.verify();
         verify(weatherRepository, never()).save(any(Weather.class));
-        Assert.assertFalse("Weather object should not be present", weather.isPresent());
+        assertThat("Weather object should not be present", weather.isPresent(), is(false));
 
     }
 
